@@ -1,0 +1,10 @@
+{
+  "name": "Painting Tutor",
+  "short_name": "Tutor",
+  "lang": "fr",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2eee6",
+  "theme_color": "#f2eee6",
+  "description": "Plan de peinture pas a pas avec palette personnalisable et recettes de melange."
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2eee6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Painting Tutor</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">PWA MVP</p>
+        <h1>Painting Tutor</h1>
+        <p class="hero-copy">
+          Transforme une image de reference en plan de peinture progressif, avec ordre recommande et lecture visuelle des etapes.
+        </p>
+      </div>
+      <button id="installButton" class="secondary-button hidden" type="button">Installer l'app</button>
+    </header>
+
+    <main class="layout">
+      <section class="card config-card">
+        <div class="section-heading">
+          <p class="eyebrow">Projet</p>
+          <h2>Configurer une etude</h2>
+        </div>
+
+        <label class="field">
+          <span>Titre du projet</span>
+          <input id="projectTitle" type="text" value="Etude de peinture" placeholder="Nom du projet">
+        </label>
+
+        <div class="field">
+          <span>Medium</span>
+          <div class="segment-control" role="radiogroup" aria-label="Choix du medium">
+            <button class="segment is-active" data-medium="oil" type="button">Huile</button>
+            <button class="segment" data-medium="acrylic" type="button">Acrylique</button>
+          </div>
+          <p id="mediumHint" class="support-copy"></p>
+        </div>
+
+        <label class="field">
+          <span>Image de reference</span>
+          <input id="referenceInput" type="file" accept="image/*">
+        </label>
+
+        <div class="reference-preview">
+          <img id="referencePreview" alt="Apercu de l'image de reference">
+          <div id="previewPlaceholder" class="preview-placeholder">
+            <p>Ajoute une image pour avoir un vrai support visuel pendant la peinture.</p>
+          </div>
+        </div>
+
+        <div class="pipette-block">
+          <div class="mini-heading">
+            <h3>Pipette</h3>
+            <p id="pipetteHint" class="support-copy">Clique sur l'image pour choisir une couleur et voir le melange suggere.</p>
+          </div>
+          <div id="pipetteResult" class="pipette-result hidden"></div>
+        </div>
+
+        <div class="backend-block">
+          <div class="mini-heading">
+            <h3>Backend segmentation</h3>
+            <p class="support-copy">Option B : branche ici un backend `SAM 2` plus tard. Si ce champ est vide, l'app reste en mode local.</p>
+          </div>
+
+          <label class="field">
+            <span>URL du backend</span>
+            <input id="backendUrl" type="text" placeholder="Ex: http://localhost:8000">
+          </label>
+          <p id="backendStatus" class="support-copy">Aucun backend configure. L'analyse reste locale pour l'instant.</p>
+        </div>
+
+        <div class="action-row">
+          <button id="generatePlanButton" class="primary-button" type="button">Generer un plan de peinture</button>
+          <button id="resetProjectButton" class="secondary-button" type="button">Reinitialiser</button>
+        </div>
+        <p id="saveStatus" class="support-copy"></p>
+      </section>
+
+      <section class="card palette-card">
+        <div class="section-heading">
+          <p class="eyebrow">Palette</p>
+          <h2>Tubes disponibles</h2>
+        </div>
+
+        <form id="tubeForm" class="tube-form">
+          <label class="field">
+            <span>Nom du tube</span>
+            <input id="tubeName" type="text" placeholder="Ex: Bleu outremer">
+          </label>
+
+          <label class="field">
+            <span>Pigment (optionnel)</span>
+            <input id="tubePigment" type="text" placeholder="Ex: PB29">
+          </label>
+          <p id="pigmentLookupStatus" class="support-copy">Entre un code pigment connu pour pre-remplir le nom et la couleur.</p>
+
+          <label class="field">
+            <span>Couleur approx.</span>
+            <input id="tubeColor" type="color" value="#2342a5">
+          </label>
+
+          <button class="secondary-button" type="submit">Ajouter le tube</button>
+        </form>
+
+        <div id="tubeList" class="tube-list"></div>
+      </section>
+
+      <section class="card plan-card">
+        <div class="section-heading">
+          <p class="eyebrow">Plan</p>
+          <h2>Etapes recommandees</h2>
+        </div>
+
+        <div id="planEmptyState" class="empty-state">
+          <p>Genere un plan pour voir le fond, les grandes masses, les valeurs et les accents finaux.</p>
+        </div>
+
+        <div id="planContent" class="hidden">
+          <section class="plan-overview">
+            <div>
+              <p class="overview-label">Projet</p>
+              <p id="overviewTitle" class="overview-value"></p>
+            </div>
+            <div>
+              <p class="overview-label">Medium</p>
+              <p id="overviewMedium" class="overview-value"></p>
+            </div>
+            <div>
+              <p class="overview-label">Progression</p>
+              <p id="overviewProgress" class="overview-value"></p>
+            </div>
+            <div>
+              <p class="overview-label">Analyse</p>
+              <p id="overviewSource" class="overview-value"></p>
+            </div>
+          </section>
+
+          <div class="plan-toolbar">
+            <button id="downloadStepsButton" class="secondary-button" type="button">Telecharger les images des etapes</button>
+          </div>
+
+          <div class="step-layout">
+            <aside id="stepList" class="step-list"></aside>
+
+            <article id="stepDetail" class="step-detail"></article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
